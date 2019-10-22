@@ -2,7 +2,7 @@ import java.net.*;
 import java.io.*;
 
 public class Client {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		Socket s = new Socket("localhost", 23500);
 		
 		PrintWriter pr = new PrintWriter(s.getOutputStream());
@@ -17,6 +17,15 @@ public class Client {
 		
 		System.out.println("Server: " + str);
 		
+		Thread.sleep(5000);
+		pr.println("Other");
+		pr.flush();
+		Thread.sleep(5000);
+		pr.println("Whatever");
+		pr.flush();
+		Thread.sleep(5000);
+		pr.println("SSTOP");
+		pr.flush();
 		s.close();
 	}
 }

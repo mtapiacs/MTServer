@@ -28,28 +28,37 @@ public class Server {
 		public void run() {
 			InputStreamReader in;
 			try {
-			in = new InputStreamReader(s.getInputStream());
-			
-			BufferedReader bf = new BufferedReader(in);
-			
-			String str = bf.readLine();
-			
-			if (str.indexOf("SSTOP") >= 0) {
-				System.out.println("Stop called");
-				s.close();
-				running = false;
-			}
-			
-			System.out.println("Client: " + str);
-			
-			PrintWriter pr = new PrintWriter(s.getOutputStream());
-			
-			pr.println("Got your connection");
-			pr.flush();
-			
+				while (true) {
+					in = new InputStreamReader(s.getInputStream());
+					
+					BufferedReader bf = new BufferedReader(in);
+					
+					String str = bf.readLine();
+					
+					if (str.indexOf("SSTOP") >= 0) {
+						System.out.println("Stop called");
+						s.close();
+						running = false;
+						break;
+					}
+					
+					System.out.println("Client: " + str);
+					
+					PrintWriter pr = new PrintWriter(s.getOutputStream());
+					
+					pr.println("Got your connection");
+					pr.flush();
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();			
+				//e.printStackTrace();
+				try {
+					s.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				System.out.println("Connection Ended");
 			}
 		}
 		
